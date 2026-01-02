@@ -88,18 +88,18 @@ function CandyCrush() {
   };
 
   const moveIntoSquareBelow = () => {
-    for (let i = 0; i < 64 - width; i++) {
-      const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
-      const isFirstRow = firstRow.includes(i);
-
-      if (isFirstRow && currentColorArrangement[i] === "") {
-        let randomNumber = Math.floor(Math.random() * candyColors.length);
-        currentColorArrangement[i] = candyColors[randomNumber];
-      }
-
-      if ((currentColorArrangement[i + width]) === "") {
+    // Önce yukarıdan aşağı taşı
+    for (let i = 0; i < 56; i++) {
+      if (currentColorArrangement[i + width] === "") {
         currentColorArrangement[i + width] = currentColorArrangement[i];
         currentColorArrangement[i] = "";
+      }
+    }
+    // Sonra boş yerlere yeni şeker ekle
+    for (let i = 0; i < 64; i++) {
+      if (currentColorArrangement[i] === "") {
+        let randomNumber = Math.floor(Math.random() * candyColors.length);
+        currentColorArrangement[i] = candyColors[randomNumber];
       }
     }
   };
@@ -157,6 +157,13 @@ function CandyCrush() {
           style={{ backgroundColor: color }}
           className="candy"
           data-id={index}
+          draggable={true}
+          onDragStart={dragStart}
+          onDragOver={(e) => e.preventDefault()}
+          onDragEnter={(e) => e.preventDefault()}
+          onDragLeave={(e) => e.preventDefault()}
+          onDrop={dragDrop}
+          onDragEnd={dragEnd}
         />
       ))}
     </div>
